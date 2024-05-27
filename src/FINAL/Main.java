@@ -9,17 +9,19 @@ package FINAL;
 public class Main {
     public static void main(String[] args) {
         OficinaDAO oficinaDAO = new OficinaDAO();
+    //Oficina 11. Sevilla. 100 	10000.00
 
-        int noOficina = 1;
+        int noOficina = 11;
 
         // Mostrar datos antes de la modificación
         Oficina oficinaAntes = oficinaDAO.selectOficina(noOficina);
         System.out.println("Antes de la modificación: " + oficinaAntes);
 
         if (oficinaAntes != null) {
+
             // Modificar la ciudad y aumentar las ventas
-            oficinaAntes.setCiudad("Nueva Ciudad");
-            oficinaAntes.setVentas(oficinaAntes.getVentas() + 1000);
+            oficinaAntes.setCiudad("Vinaròs");
+            oficinaAntes.setVentas(oficinaAntes.getVentas() - 1000);
 
             if (oficinaDAO.updateOficina(oficinaAntes)) {
                 // Mostrar datos después de la modificación

@@ -35,8 +35,8 @@ public class OficinaDAO {
             rs.close();
             sentencia.close();
             connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
         return oficina;
     }
@@ -44,7 +44,7 @@ public class OficinaDAO {
     public boolean updateOficina(Oficina oficina) {
         boolean rowUpdated = false;
         Connection connection = conectar();
-        String sql = "UPDATE Oficinas SET ciudad = ?, ventas = ? WHERE no_oficina = ?";
+        String sql = "UPDATE Oficinas SET ciudad = ?, ventas = ? WHERE oficina = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, oficina.getCiudad());
@@ -54,8 +54,8 @@ public class OficinaDAO {
 
             statement.close();
             connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+           System.out.println(ex);
         }
         return rowUpdated;
     }
