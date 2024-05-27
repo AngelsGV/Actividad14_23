@@ -4,49 +4,58 @@ package FINAL;
 // No hace falta ni eliminar ni historias, solo poder acceder a los datos y modificar.
 import java.sql.*;
 
-import static java.sql.DriverManager.getConnection;
-
 public class OficinaDAO {
-    //Conexión normal.
+    //Conexión normal. Igual que ejercicio anterior
     private static Connection conectar() {
         Connection con = null;
         String url = "jdbc:mysql://localhost/Empresa";
         try {
-            con = getConnection(url, "Pepe", "12345");
+            con =DriverManager.getConnection(url, "Pepe", "12345");
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         return con;
     }
 
-    public Oficina selectOficina(int noOficina) {
+    public Oficina selectOficina(int nOficina) {
         Oficina oficina = null;
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_OFICINA_BY_ID);) {
-            preparedStatement.setInt(1, noOficina);
-            ResultSet rs = preparedStatement.executeQuery();
+        Connection connection = conectar();
+        String sql = "SELECT * FROM Oficinas WHERE oficina = ?";
+        try{
+            PreparedStatement sentencia = connection.prepareStatement(sql);
+            sentencia.setInt(1, nOficina);
+            ResultSet rs = sentencia.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 String ciudad = rs.getString("ciudad");
-                double superficie = rs.getDouble("superficie");
-                double ventas = rs.getDouble("ventas");
-                oficina = new Oficina(noOficina, ciudad, superficie, ventas);
+                int superficie = rs.getInt("superficie");
+                int ventas = rs.getInt("ventas");
+                oficina = new Oficina(nOficina, ciudad, superficie, ventas);
             }
+            rs.close();
+            sentencia.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return oficina;
     }
 
-    public boolean updateOficina(Oficina oficina) throws SQLException {
-        boolean rowUpdated;
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_OFICINA);) {
+    public boolean updateOficina(Oficina oficina) {
+        boolean rowUpdated = false;
+        Connection connection = conectar();
+        String sql = "UPDATE Oficinas SET ciudad = ?, ventas = ? WHERE no_oficina = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, oficina.getCiudad());
             statement.setDouble(2, oficina.getVentas());
-            statement.setInt(3, oficina.getNoOficina());
-
+            statement.setInt(3, oficina.getOficina());
             rowUpdated = statement.executeUpdate() > 0;
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return rowUpdated;
     }
