@@ -8,28 +8,28 @@ package FINAL;
 
 public class Main {
     public static void main(String[] args) {
-        OficinaDAO oficinaDAO = new OficinaDAO();
+
     //Oficina 11. Sevilla. 100 	10000.0
         int nOficina = 11;
 
-        // Mostrar datos antes de la modificación
-        Oficina oficinaAntes = oficinaDAO.selectOficina(nOficina);
+        // Datos antes de la modificación
+        Oficina oficinaAntes = OficinaDAO.selectOficina(nOficina);
         System.out.println("Antes de la modificación: " + oficinaAntes);
 
-        if (oficinaAntes != null) { //si la oficina no está vacía
+        if (oficinaAntes != null) { // Si la oficina no está vacía
 
-            // Modificar la ciudad y aumentar las ventas. Pon lo que te interese
+            // Modificar la ciudad y aumentar las ventas
             oficinaAntes.setCiudad("Castellón");
             oficinaAntes.setVentas(oficinaAntes.getVentas() + 1000);
-            if (oficinaDAO.updateOficina(oficinaAntes)) {
-                // Mostrar datos después de la modificación
-                Oficina oficinaDespues = oficinaDAO.selectOficina(nOficina);
-                System.out.println("Después de la modificación: " + oficinaDespues);
-            } else {
-                System.out.println("No se pudo hace el cambio.");
-            }
+
+            // Actualizar la oficina en BD
+            OficinaDAO.update(oficinaAntes);
+
+            // datos después de la modificación
+            Oficina oficinaDespues = OficinaDAO.selectOficina(nOficina);
+            System.out.println("Después de la modificación: " + oficinaDespues);
         } else {
-            System.out.println("La oficina con el número " + nOficina + " no existe.");//Si está vacía
+            System.out.println("La oficina con el número " + nOficina + " no existe."); // Si está vacía
         }
     }
 }

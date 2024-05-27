@@ -17,12 +17,13 @@ public class OficinaDAO {
         return con;
     }
 
-    public Oficina selectOficina(int nOficina) {
+    public static Oficina selectOficina(int nOficina) {//Resuela 14.11
+
         Oficina oficina = null;
-        Connection connection = conectar();
         String sql = "SELECT * FROM Oficinas WHERE oficina = ?";
         try{
-            PreparedStatement sentencia = connection.prepareStatement(sql);
+            Connection conexion = conectar();
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
             sentencia.setInt(1, nOficina);
             ResultSet rs = sentencia.executeQuery();
 
@@ -31,32 +32,28 @@ public class OficinaDAO {
                 int superficie = rs.getInt("superficie");
                 int ventas = rs.getInt("ventas");
                 oficina = new Oficina(nOficina, ciudad, superficie, ventas);
+                conexion.close();
             }
-            rs.close();
-            sentencia.close();
-            connection.close();
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         return oficina;
     }
 
-    public boolean updateOficina(Oficina oficina) {
-        boolean rowUpdated = false;
-        Connection connection = conectar();
-        String sql = "UPDATE Oficinas SET ciudad = ?, ventas = ? WHERE oficina = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, oficina.getCiudad());
-            statement.setDouble(2, oficina.getVentas());
-            statement.setInt(3, oficina.getOficina());
-            rowUpdated = statement.executeUpdate() > 0;
-
-            statement.close();
-            connection.close();
-        } catch (SQLException ex) {
-           System.out.println(ex);
+    public static void update(Oficina oficina) {
+        if (oficina != null) {
+            String sql = "UPDATE Oficinas SET ciudad = ?, ventas = ? WHERE oficina = ?";
+            try {
+                Connection conexion = conectar();
+                PreparedStatement sentencia = conexion.prepareStatement(sql);
+                sentencia.setString(1, oficina.getCiudad());
+                sentencia.setDouble(2, oficina.getVentas());
+                sentencia.setInt(3, oficina.getOficina());
+                sentencia.executeUpdate();
+                conexion.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
         }
-        return rowUpdated;
     }
 }
