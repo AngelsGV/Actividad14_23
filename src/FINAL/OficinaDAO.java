@@ -1,15 +1,18 @@
 package FINAL;
 
-
+//Modificar ciudad e incrementar ventas.
+// No hace falta ni eliminar ni historias, solo poder acceder a los datos y modificar.
 import java.sql.*;
 
-public class OficinaDAO {
+import static java.sql.DriverManager.getConnection;
 
+public class OficinaDAO {
+    //Conexión normal.
     private static Connection conectar() {
         Connection con = null;
         String url = "jdbc:mysql://localhost/Empresa";
         try {
-            con = DriverManager.getConnection(url, "Pepe", "12345");
+            con = getConnection(url, "Pepe", "12345");
         } catch (SQLException ex) {
             System.out.println(ex);
         }
