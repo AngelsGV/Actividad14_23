@@ -19,7 +19,7 @@ public class Main {
         if (oficinaAntes != null) { // Si la oficina no está vacía
 
             // Modificar la ciudad y aumentar las ventas
-            oficinaAntes.setCiudad("Castellón");
+            oficinaAntes.setCiudad("Lleida");
             oficinaAntes.setVentas(oficinaAntes.getVentas() + 1000);
 
             // Actualizar la oficina en BD
